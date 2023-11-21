@@ -1,2 +1,2 @@
-# FP_networking_Komalpreet_Saryudhvir
+# FP_networking Komalpreet Saryudhvir
 Final Project Networking Semester III - Sterling College
