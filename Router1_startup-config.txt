@@ -1,0 +1,132 @@
+!
+version 15.4
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R1
+!
+!
+!
+!
+ip dhcp excluded-address 192.168.25.65
+ip dhcp excluded-address 192.168.25.129
+!
+ip dhcp pool POOL_LANSALES
+ network 192.168.25.64 255.255.255.192
+ default-router 192.168.25.65
+ dns-server 10.10.10.5
+ip dhcp pool POOL_LANHR
+ network 192.168.25.128 255.255.255.192
+ default-router 192.168.25.129
+ dns-server 10.10.10.5
+!
+!
+!
+no ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface GigabitEthernet0/0/0
+ description link to LAN 192.168.25.64/26
+ ip address 192.168.25.65 255.255.255.192
+ ip ospf 10 area 0
+ duplex auto
+ speed auto
+ ipv6 address 2001:DB8:CAFE:3::3/64
+ ipv6 ospf 10 area 0
+!
+interface GigabitEthernet0/0/1
+ description link to LAN 192.168.25.128/26
+ ip address 192.168.25.129 255.255.255.192
+ ip ospf 10 area 0
+ duplex auto
+ speed auto
+ ipv6 address 2001:DB8:CAFE:4::4/64
+ ipv6 ospf 10 area 0
+!
+interface GigabitEthernet0/0/2
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/1/0
+ description link to LAN 192.168.28.4/30
+ ip address 192.168.28.5 255.255.255.252
+ ip ospf 10 area 0
+ ipv6 address 2001:DB8:ACAD:3::3/64
+ ipv6 ospf 10 area 0
+!
+interface Serial0/1/1
+ description link to LAN 192.168.28.0/30
+ ip address 192.168.28.2 255.255.255.252
+ ip ospf 10 area 0
+ ipv6 address 2001:DB8:ACAD:1::2/64
+ ipv6 ospf 10 area 0
+ clock rate 2000000
+!
+interface Serial0/2/0
+ description link to LAN 192.168.28.8/30
+ ip address 192.168.28.9 255.255.255.252
+ ip ospf 10 area 0
+ ipv6 address 2001:DB8:ACAD:5::5/64
+ ipv6 ospf 10 area 0
+!
+interface Serial0/2/1
+ no ip address
+ clock rate 2000000
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router ospf 10
+ router-id 2.2.2.2
+ log-adjacency-changes
+!
+ipv6 router ospf 10
+ log-adjacency-changes
+!
+ip classless
+ip route 0.0.0.0 0.0.0.0 Serial0/2/0 
+!
+ip flow-export version 9
+!
+ipv6 route ::/0 Serial0/2/0
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
